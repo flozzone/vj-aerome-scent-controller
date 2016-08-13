@@ -35,7 +35,7 @@ def activate_scent(valve_id):
 
 
 @socketio.on('deactivate', namespace='/scent')
-def activate_scent(valve_id):
+def dectivate_scent(valve_id):
     scent_ctrl.close_valve(int(valve_id))
 
 
