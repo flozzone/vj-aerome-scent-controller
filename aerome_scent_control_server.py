@@ -2,7 +2,7 @@ import logging.config
 import signal
 
 from flask import Flask, send_from_directory
-from flask.ext.socketio import SocketIO
+from flask_socketio import SocketIO
 
 from aerome_scent_controller import AeromeScentController
 
