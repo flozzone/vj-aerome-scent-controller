@@ -4,7 +4,7 @@ import signal
 from flask import Flask, send_from_directory
 from flask_socketio import SocketIO
 
-from aerome_scent_controller import AeromeScentController
+from gpio_stinkomat_6000_controller import AeromeScentController
 
 
 SERIAL_PORT = "TODO"
@@ -14,7 +14,7 @@ SERIAL_PORT = "TODO"
 app = Flask(__name__)
 # Instanciate SocketIO (Websockets, used for events) on top of it
 socketio = SocketIO(app)
-
+# Instanciate Scent controller
 scent_ctrl = AeromeScentController(SERIAL_PORT)
 
 
@@ -31,13 +31,13 @@ def static_proxy(path):
 @socketio.on('activate', namespace='/scent')
 def activate_scent(valve_id):
     logging.info("Got activate for valve: " + valve_id)
-    scent_ctrl.open_valve(int(valve_id))
+    scent_ctrl.open_valve(valve_id)
 
 
 @socketio.on('deactivate', namespace='/scent')
 def dectivate_scent(valve_id):
     logging.info("Got deactivate for valve: " + valve_id)
-    scent_ctrl.close_valve(int(valve_id))
+    scent_ctrl.close_valve(valve_id)
 
 
 def sig_term_handler(signum, frame):
@@ -57,7 +57,7 @@ def main():
         # Blocking! - Start Flask server
         socketio.run(app, host='0.0.0.0')
     except KeyboardInterrupt:
-        pass
+        scent_ctrl.close()
     finally:
         logging.error("Cleanup done, exiting")
 
