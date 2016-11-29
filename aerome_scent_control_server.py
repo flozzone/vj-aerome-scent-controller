@@ -30,13 +30,13 @@ def static_proxy(path):
 
 @socketio.on('activate', namespace='/scent')
 def activate_scent(valve_id):
-    logging.info("Got activate for valve: " + valve_id)
+    logging.info("Got activate for valve: %s" % valve_id)
     scent_ctrl.open_valve(valve_id)
 
 
 @socketio.on('deactivate', namespace='/scent')
 def dectivate_scent(valve_id):
-    logging.info("Got deactivate for valve: " + valve_id)
+    logging.info("Got deactivate for valve: %s" % valve_id)
     scent_ctrl.close_valve(valve_id)
 
 

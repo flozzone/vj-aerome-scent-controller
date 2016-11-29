@@ -43,11 +43,13 @@ class AeromeScentController (object):
         GPIO.cleanup()
 
     def _set_valve_state(self, valve_id, state):
-        if valve_id not in SCENT_ID_TO_PIN_MAPPING.keys():
-            self.log.error("Unknown valve " + valve_id)
+        valve_key = str(valve_id)
+
+        if valve_key not in SCENT_ID_TO_PIN_MAPPING.keys():
+            self.log.error("Unknown valve %s" % valve_key)
             return
 
-        valve_pin = SCENT_ID_TO_PIN_MAPPING[valve_id]
+        valve_pin = SCENT_ID_TO_PIN_MAPPING[valve_key]
 
         self.state_change_lock.acquire()
         try:
