@@ -1,7 +1,7 @@
 import logging.config
 import signal
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from flask_socketio import SocketIO
 
 from gpio_stinkomat_6000_controller import AeromeScentController
@@ -26,6 +26,11 @@ def index():
 @app.route('/<path:path>')
 def static_proxy(path):
     return send_from_directory('static/', path)
+
+
+@app.route('/status', methods=['GET'])
+def get_staus():
+    return jsonify(scent_ctrl.get_state())
 
 
 @socketio.on('activate', namespace='/scent')
