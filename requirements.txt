@@ -18,4 +18,4 @@
 # Any version
   pyserial
   recordclass
-  RPi.GPIO
+  fakeRPiGPIO
