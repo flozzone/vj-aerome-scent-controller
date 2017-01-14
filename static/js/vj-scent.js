@@ -18,6 +18,12 @@ function deactivate(scent) {
     socket.emit('deactivate', scent);
 }
 
+function stopAll() {
+    console.log('Deactivating all scents');
+    socket.emit('deactivateAll');
+    fetchState();
+}
+
 function handleClick(cb) {
     if (cb.checked)
         activate(cb.id);

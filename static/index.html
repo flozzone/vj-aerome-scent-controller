@@ -13,16 +13,18 @@
 
 <div class="container">
     <h3>Stinkomat6000</h3>
-    <div data-bind="foreach: availableScents">
-        <!-- Switch -->
-        <span>Scent <span data-bind="text: $index"/></span>
-        <div class="switch">
-            <label>
-                Off
-                <input data-bind="attr: {id: $index}" type="checkbox" onclick="handleClick(this)">
-                <span class="lever"></span>
-                On
-            </label>
+    <div id="scentCheckboxes" class="row">
+        <div data-bind="foreach: availableScents">
+            <!-- Switch -->
+            <span>Scent <span data-bind="text: $index"/></span>
+            <div class="switch">
+                <label>
+                    Off
+                    <input data-bind="attr: {id: $index}" type="checkbox" onclick="handleClick(this)" disabled="true">
+                    <span class="lever"></span>
+                    On
+                </label>
+            </div>
         </div>
     </div>
 </div>
