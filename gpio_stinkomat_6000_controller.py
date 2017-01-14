@@ -30,7 +30,7 @@ class AeromeScentController (object):
         for pin in SCENT_ID_TO_PIN_MAPPING.values():
             GPIO.setup(pin, GPIO.OUT)
         GPIO.setup(FLUSH_VALVE_PIN, GPIO.OUT)
-        self._close_all_valves()
+        self.close_all_valves()
 
     @staticmethod
     def get_state():
@@ -46,8 +46,16 @@ class AeromeScentController (object):
         self._set_valve_state(valve_id, GPIO.LOW)
 
     def close(self):
-        self._close_all_valves()
+        self.close_all_valves()
         GPIO.cleanup()
+
+    def close_all_valves(self):
+        self.state_change_lock.acquire()
+        try:
+            self.log.error("Closing all")
+            self._set_all_pins_low()
+        finally:
+            self.state_change_lock.release()
 
     def _set_valve_state(self, valve_id, state):
         valve_key = str(valve_id)
@@ -61,14 +69,6 @@ class AeromeScentController (object):
         self.state_change_lock.acquire()
         try:
             self._set_pin_to_state(valve_pin, state)
-        finally:
-            self.state_change_lock.release()
-
-    def _close_all_valves(self):
-        self.state_change_lock.acquire()
-        try:
-            self.log.error("Closing all")
-            self._set_all_pins_low()
         finally:
             self.state_change_lock.release()
 

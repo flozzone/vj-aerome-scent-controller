@@ -45,6 +45,12 @@ def deactivate_scent(valve_id):
     scent_ctrl.close_valve(valve_id)
 
 
+@socketio.on('deactivateAll', namespace='/scent')
+def deactivate_all_scents():
+    logging.info("Got deactivate for all valves")
+    scent_ctrl.close_all_valves()
+
+
 def sig_term_handler(signum, frame):
     raise KeyboardInterrupt('Signal %i receivied!' % signum)
 
