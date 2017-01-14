@@ -40,7 +40,7 @@ def activate_scent(valve_id):
 
 
 @socketio.on('deactivate', namespace='/scent')
-def dectivate_scent(valve_id):
+def deactivate_scent(valve_id):
     logging.info("Got deactivate for valve: %s" % valve_id)
     scent_ctrl.close_valve(valve_id)
 
