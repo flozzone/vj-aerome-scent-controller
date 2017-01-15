@@ -1,5 +1,4 @@
 SCENT_STATUS_URL = "/status";
-SCENT_ON_VALUE = "HIGH";
 
 console.log("Start");
 var socket = io.connect('http://' + document.domain + ':' + location.port + '/scent');
@@ -34,7 +33,7 @@ function handleClick(cb) {
 function applyState(data) {
     $.each(data, function(key, val) {
         var cb =$('#scentCheckboxes').find('#' + key);
-        cb.prop('checked', val == SCENT_ON_VALUE);
+        cb.prop('checked', val);
         cb.prop('disabled', false);
     });
 }

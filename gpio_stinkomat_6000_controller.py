@@ -36,7 +36,7 @@ class AeromeScentController (object):
     def get_state():
         ret = {}
         for pin_id, pin in SCENT_ID_TO_PIN_MAPPING.iteritems():
-            ret[pin_id] = GPIO.input(pin)
+            ret[pin_id] = GPIO.input(pin) == GPIO.HIGH
         return ret
 
     def open_valve(self, valve_id):
