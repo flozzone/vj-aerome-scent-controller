@@ -7,6 +7,12 @@ socket.on('connect', function(msg) {
     console.log('[INFO] Socket connected.');
 });
 
+socket.on('status_changed', function(data) {
+    console.log('[INFO] Status changed to');
+    console.log(data);
+    applyState(data);
+});
+
 function activate(scent) {
     console.log('Activating scent: ' + scent);
     socket.emit('activate', scent);

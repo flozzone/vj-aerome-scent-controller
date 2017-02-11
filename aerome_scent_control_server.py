@@ -1,5 +1,6 @@
 import logging.config
 import signal
+from threading import Timer
 
 from flask import Flask, send_from_directory, jsonify
 from flask_socketio import SocketIO
@@ -8,6 +9,7 @@ from gpio_stinkomat_6000_controller import AeromeScentController
 
 
 SERIAL_PORT = "TODO"
+SCENT_DURATION_SEC = 1
 
 
 # Instanciate Flask (Static files and REST API)
@@ -33,10 +35,16 @@ def get_staus():
     return jsonify(scent_ctrl.get_state())
 
 
+def state_changed_callback():
+    logging.info('Execute callback')
+    socketio.emit('status_changed', scent_ctrl.get_state(), namespace='/scent')
+
+
 @socketio.on('activate', namespace='/scent')
 def activate_scent(valve_id):
     logging.info("Got activate for valve: %s" % valve_id)
     scent_ctrl.open_valve(valve_id)
+    Timer(SCENT_DURATION_SEC, scent_ctrl.close_valve, [valve_id]).start()
 
 
 @socketio.on('deactivate', namespace='/scent')
@@ -59,7 +67,7 @@ def main():
     # Initialize logger
     logging.config.fileConfig('log.ini')
 
-    scent_ctrl.initialize_controller()
+    scent_ctrl.initialize_controller(state_changed_callback)
 
     try:
         # Set signal handler for Shutdown

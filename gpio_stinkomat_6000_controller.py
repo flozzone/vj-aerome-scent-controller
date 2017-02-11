@@ -22,8 +22,9 @@ class AeromeScentController (object):
         self.log = None
         self.open_valves = None
         self.state_change_lock = Lock()
+        self.status_changed_callback = None
 
-    def initialize_controller(self):
+    def initialize_controller(self, status_changed_callback):
         self.log = logging.getLogger("aeromeScentController")
         self.log.error("Init GPIO controller")
         GPIO.setmode(GPIO.BOARD)
@@ -31,6 +32,7 @@ class AeromeScentController (object):
             GPIO.setup(pin, GPIO.OUT)
         GPIO.setup(FLUSH_VALVE_PIN, GPIO.OUT)
         self.close_all_valves()
+        self.status_changed_callback = status_changed_callback
 
     @staticmethod
     def get_state():
@@ -83,6 +85,7 @@ class AeromeScentController (object):
                 self.open_valves -= 1
                 if self.open_valves < 1:
                     self._set_all_pins_low()
+            self.status_changed_callback()
         else:
             self.log.error("Pin " + str(pin) + " is already " + str(state))
 
