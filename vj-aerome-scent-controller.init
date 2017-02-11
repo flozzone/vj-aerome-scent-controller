@@ -14,7 +14,7 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 WORK_DIR="/opt/vj-aerome-scent-controller/"
-DAEMON=aerome_scent_control_server.py
+DAEMON=./aerome_scent_control_server.py
 NAME=vj-aerome-scent-controller
 DESC="Aerome Scent Controller"
 PID=/var/run/aerome-scent-controller.pid
@@ -28,21 +28,13 @@ case "$1" in
             exit 1
         fi
         cd "$WORK_DIR"
-        python $DAEMON > /dev/null 2>&1 &
-        pidof -x $DAEMON > $PID
-        if [ $? -eq 0 ]; then
-            echo "Done."
-        else
-            echo "Cannot start!"
-            exit 1
-        fi
+        start-stop-daemon --start --make-pidfile --pidfile $PID --exec $DAEMON --background
         ;;
     stop)
         echo -n "Stopping $DESC: "
         if [ -f $PID ]; then
-            kill `cat $PID`
+            start-stop-daemon --stop --pidfile $PID
             rm $PID
-            echo "Done."
         else
             echo "Not running."
             exit 1
