@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import logging.config
 import signal
 from threading import Timer
@@ -54,7 +56,7 @@ def deactivate_scent(valve_id):
 
 
 @socketio.on('deactivateAll', namespace='/scent')
-def deactivate_all_scents():
+def deactivate_all_scents(_=None):
     logging.info("Got deactivate for all valves")
     scent_ctrl.close_all_valves()
 
