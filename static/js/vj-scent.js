@@ -5,6 +5,15 @@ var socket = io.connect('http://' + document.domain + ':' + location.port + '/sc
 
 socket.on('connect', function(msg) {
     console.log('[INFO] Socket connected.');
+    fetchState();
+});
+
+socket.on('disconnect', function (msg) {
+    console.log('[INFO] Socket disconnected');
+    $.each(scentModel.availableScents, function (_, val) {
+        var cb =$('#scentCheckboxes').find('#' + val);
+        cb.prop('disabled', true);
+    })
 });
 
 socket.on('status_changed', function(data) {
@@ -55,4 +64,3 @@ var scentModel = {
     availableScents: [0, 1, 2, 3, 4, 5]
 };
 ko.applyBindings(scentModel);
-fetchState();
