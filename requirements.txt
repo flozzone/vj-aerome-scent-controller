@@ -1,17 +1,14 @@
-# As of 29th September 2015
-
-# Outdated
-  jinja2==2.7.3
-  flask-socketio==2.7.1
-
-# Any version
-  gevent
-  itsdangerous
-  werkzeug
-  markupsafe
-  gevent-websocket
-  gevent-socketio
+# OpenEmbedded dependencies
   flask
   pyserial
-  recordclass
+
+# Custom dependecies
+  flask-socketio==2.8.5
+  python-engineio==1.2.4
+  gevent-websocket==0.9.5
+  gevent==1.2.1
+  recordclass==0.4.2
+  python-socketio==1.7.1
+
+# Dev only dependencies
   fakeRPiGPIO
