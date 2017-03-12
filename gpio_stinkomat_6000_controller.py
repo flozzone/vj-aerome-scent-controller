@@ -31,8 +31,8 @@ class AeromeScentController (object):
         for pin in SCENT_ID_TO_PIN_MAPPING.values():
             GPIO.setup(pin, GPIO.OUT)
         GPIO.setup(FLUSH_VALVE_PIN, GPIO.OUT)
-        self.close_all_valves()
         self.status_changed_callback = status_changed_callback
+        self.close_all_valves()
 
     @staticmethod
     def get_state():
@@ -92,3 +92,4 @@ class AeromeScentController (object):
     def _set_all_pins_low(self):
         GPIO.output(SCENT_ID_TO_PIN_MAPPING.values() + [FLUSH_VALVE_PIN], GPIO.LOW)
         self.open_valves = 0
+        self.status_changed_callback()

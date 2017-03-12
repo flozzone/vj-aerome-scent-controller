@@ -2,7 +2,6 @@
 
 import logging.config
 import signal
-from threading import Timer
 
 from flask import Flask, send_from_directory, jsonify
 from flask_socketio import SocketIO
@@ -37,8 +36,13 @@ def get_staus():
     return jsonify(scent_ctrl.get_state())
 
 
+def close_valve_task(valve_id, duration=SCENT_DURATION_SEC):
+    socketio.sleep(duration)
+    scent_ctrl.close_valve(valve_id)
+
+
 def state_changed_callback():
-    logging.info('Execute callback')
+    logging.info('Execute state changed callback ...')
     socketio.emit('status_changed', scent_ctrl.get_state(), namespace='/scent')
 
 
@@ -46,7 +50,7 @@ def state_changed_callback():
 def activate_scent(valve_id):
     logging.info("Got activate for valve: %s" % valve_id)
     scent_ctrl.open_valve(valve_id)
-    Timer(SCENT_DURATION_SEC, scent_ctrl.close_valve, [valve_id]).start()
+    socketio.start_background_task(close_valve_task, valve_id)
 
 
 @socketio.on('deactivate', namespace='/scent')
