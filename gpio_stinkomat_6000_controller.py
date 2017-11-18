@@ -62,7 +62,7 @@ class AeromeScentController (object):
     def _set_valve_state(self, valve_id, state):
         valve_key = str(valve_id)
 
-        if valve_key not in SCENT_ID_TO_PIN_MAPPING.keys():
+        if valve_key not in SCENT_ID_TO_PIN_MAPPING:
             self.log.error("Unknown valve %s" % valve_key)
             return
 

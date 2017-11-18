@@ -25,11 +25,11 @@ class AeromeScentController (object):
             self.serial_port.flushInput()
             self.serial_port.flushOutput()
 
-        except OSError, error:
+        except OSError as error:
             self.serial_port = None
             self.log.error("Cannot initialize. Reason: %s", error)
 
-        except serial.serialutil.SerialException, error:
+        except serial.serialutil.SerialException as error:
             self.serial_port = None
             self.log.error("Cannot initialize. Reason: %s", error)
 
